@@ -8,10 +8,11 @@ namespace clickNewCircle
     public partial class Form1 : Form
     {
         private List<Circle> circles;
-        private List<Rectangle> oldCircles; // Keep all red circles
+        private List<Rectangle> oldCircles; // Keep all old circles
         private Rectangle currentCircle;
         private const int CircleRadius = 30;
-        private const int WhiteCircleCount = 5;
+        //remove white circle functions later
+        private const int WhiteCircleCount = 0;
         private const int newCircleRadius = 50;
         private Random rand;
         private int score = 0;
@@ -30,7 +31,7 @@ namespace clickNewCircle
             generateCircles();
             GenerateNewCircle();     // Initial red circle
         }
-
+        
         private void generateCircles()
         {
             circles = new List<Circle>();
@@ -99,7 +100,7 @@ namespace clickNewCircle
                 foreach (var circle in circles)
                 {
                     g.FillEllipse(whiteBrush, circle.X - circle.Radius, circle.Y - circle.Radius, circle.Radius * 2, circle.Radius * 2);
-                    using (Pen borderPen = new Pen(Color.Black, 2)) // 2px thick black border
+                    using (Pen borderPen = new Pen(Color.Black, 2)) 
                     {
                         g.DrawEllipse(borderPen, circle.X - circle.Radius, circle.Y - circle.Radius, circle.Radius * 2, circle.Radius * 2);
                     }
@@ -113,7 +114,7 @@ namespace clickNewCircle
                 {
                     g.FillEllipse(redBrush, rect);
 
-                    using (Pen borderPen = new Pen(Color.DarkRed, 2))
+                    using (Pen borderPen = new Pen(Color.Black, 2))
                     {
                         g.DrawEllipse(borderPen, rect);
                     }
