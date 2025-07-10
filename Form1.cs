@@ -8,10 +8,13 @@ namespace clickNewCircle
     public partial class Form1 : Form
     {
         private List<Circle> circles;
+        private List<Rectangle> redCircles; // Keep all red circles
+        private Rectangle currentRedCircle;
         private const int CircleRadius = 30;
-        private const int CircleCount = 5;
-        private Rectangle centerCircleBounds;
+        private const int WhiteCircleCount = 5;
+        private const int newCircleRadius = 50;
         private Random rand;
+        private int score = 0;
 
         public Form1()
         {
@@ -22,41 +25,65 @@ namespace clickNewCircle
             this.MouseClick += new MouseEventHandler(OnMouseClick);
 
             rand = new Random();
-            GenerateRandomCircles();     // Generate the white ones
-            GenerateCenterCircle();      // Generate the initial red one
+            redCircles = new List<Rectangle>();
+
+            generateCircles();
+            GenerateNewCircle();     // Initial red circle
         }
 
-        private void GenerateCenterCircle()
+        private void generateCircles()
         {
-            int centerRadius = 50;
-            int x = rand.Next(centerRadius, this.ClientSize.Width - centerRadius);
-            int y = rand.Next(centerRadius, this.ClientSize.Height - centerRadius);
-            centerCircleBounds = new Rectangle(x - centerRadius, y - centerRadius, centerRadius * 2, centerRadius * 2);
-        }
-
-        private void OnMouseClick(object sender, MouseEventArgs e)
-        {
-            double dx = e.X - (centerCircleBounds.Left + centerCircleBounds.Width / 2);
-            double dy = e.Y - (centerCircleBounds.Top + centerCircleBounds.Height / 2);
-            double distance = Math.Sqrt(dx * dx + dy * dy);
-
-            if (distance <= centerCircleBounds.Width / 2)
-            {
-                GenerateCenterCircle(); // Move red circle
-                Invalidate(); // Repaint
-            }
-        }
-
-        private void GenerateRandomCircles()
-        {
-            Random rand = new Random();
             circles = new List<Circle>();
 
-            for (int i = 0; i < CircleCount; i++)
+            for (int i = 0; i < WhiteCircleCount; i++)
             {
                 int x = rand.Next(CircleRadius, this.ClientSize.Width - CircleRadius);
                 int y = rand.Next(CircleRadius, this.ClientSize.Height - CircleRadius);
                 circles.Add(new Circle(x, y, CircleRadius));
+            }
+        }
+
+        private void GenerateNewCircle()
+        {
+            Rectangle newCircle;
+            bool overlaps;
+
+            do
+            {
+                int x = rand.Next(newCircleRadius, this.ClientSize.Width - newCircleRadius);
+                int y = rand.Next(newCircleRadius, this.ClientSize.Height - newCircleRadius);
+                newCircle = new Rectangle(x - newCircleRadius, y - newCircleRadius, newCircleRadius * 2, newCircleRadius * 2);
+
+                overlaps = false;
+                foreach (var circle in circles)
+                {
+                    double dx = x - circle.X;
+                    double dy = y - circle.Y;
+                    double distance = Math.Sqrt(dx * dx + dy * dy);
+                    if (distance < newCircleRadius + circle.Radius)
+                    {
+                        overlaps = true;
+                        break;
+                    }
+                }
+            } while (overlaps);
+
+            currentRedCircle = newCircle;
+            redCircles.Add(newCircle); // Keep track of all red circles
+        }
+
+        private void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            double dx = e.X - (currentRedCircle.Left + currentRedCircle.Width / 2);
+            double dy = e.Y - (currentRedCircle.Top + currentRedCircle.Height / 2);
+            double distance = Math.Sqrt(dx * dx + dy * dy);
+
+            if (distance <= currentRedCircle.Width / 2)
+            {
+                score++;
+                this.Text = $"Score: {score}";
+                GenerateNewCircle(); // Add new red circle
+                Invalidate();           // Repaint
             }
         }
 
@@ -65,7 +92,7 @@ namespace clickNewCircle
             base.OnPaint(e);
             Graphics g = e.Graphics;
 
-            // Draw random white circles
+            // Draw white circles
             using (Brush whiteBrush = new SolidBrush(Color.White))
             {
                 foreach (var circle in circles)
@@ -74,21 +101,15 @@ namespace clickNewCircle
                 }
             }
 
-            // Draw center red circle
+            // Draw all red circles
             using (Brush redBrush = new SolidBrush(Color.Red))
             {
-                g.FillEllipse(redBrush, centerCircleBounds);
+                foreach (var rect in redCircles)
+                {
+                    g.FillEllipse(redBrush, rect);
+                }
             }
         }
-
-        /*     private void InitializeComponent()
-             {
-                 this.SuspendLayout();
-                 this.ClientSize = new System.Drawing.Size(800, 600);
-                 this.Name = "Form1";
-                 this.ResumeLayout(false);
-             }
-         } */
 
         public class Circle
         {
