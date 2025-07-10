@@ -84,6 +84,7 @@ namespace clickNewCircle
             {
                 score++;
                 this.Text = $"Score: {score}";
+                System.Threading.Thread.Sleep(2000); //adjust here
                 GenerateNewCircle(); // Add new circle
                 Invalidate();           // Repaint
             }
@@ -108,7 +109,7 @@ namespace clickNewCircle
             }
 
             // Draw all circles
-            using (Brush redBrush = new SolidBrush(Color.Red))
+            using (Brush redBrush = new SolidBrush(Color.White))
             {
                 foreach (var rect in oldCircles)
                 {
