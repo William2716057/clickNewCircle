@@ -13,9 +13,12 @@ namespace clickNewCircle
         private const int CircleRadius = 30;
         //remove white circle functions later
         private const int WhiteCircleCount = 0;
-        private const int newCircleRadius = 50;
+        private const int newCircleRadius = 20;
         private Random rand;
         private int score = 0;
+        private Timer delayTimer;
+        private bool showWhiteScreen = false;
+        private Timer whiteScreenTimer;
 
         public Form1()
         {
@@ -24,12 +27,30 @@ namespace clickNewCircle
             this.BackColor = Color.Black;
             this.ClientSize = new Size(800, 600);
             this.MouseClick += new MouseEventHandler(OnMouseClick);
+            whiteScreenTimer = new Timer();
+            whiteScreenTimer.Interval = 3000; // 3 seconds
+            whiteScreenTimer.Tick += (s, ev) =>
+            {
+                showWhiteScreen = false;
+                whiteScreenTimer.Stop();
+                GenerateNewCircle();
+                Invalidate(); // Redraw after white screen
+            };
 
             rand = new Random();
             oldCircles = new List<Rectangle>();
 
             generateCircles();
-            GenerateNewCircle();     // Initial red circle
+            GenerateNewCircle();     // Initial circle
+            /*
+            delayTimer = new Timer();
+            delayTimer.Interval = 2000;
+            delayTimer.Tick += (s, e) =>
+            {
+                delayTimer.Stop();
+                //GenerateNewCircle();
+                //Invalidate();
+            };*/
         }
         
         private void generateCircles()
@@ -82,18 +103,30 @@ namespace clickNewCircle
 
             if (distance <= currentCircle.Width / 2)
             {
+                //fix scores later
                 score++;
                 this.Text = $"Score: {score}";
-                System.Threading.Thread.Sleep(2000); //adjust here
-                GenerateNewCircle(); // Add new circle
+                showWhiteScreen = true;
+                whiteScreenTimer.Start();
+                //System.Threading.Thread.Sleep(2000); //adjust here
+                //delayTimer.Start();
+                //CoverScreenTwoSeconds();
+                //GenerateNewCircle(); // Add new circle
                 Invalidate();           // Repaint
             }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+
             base.OnPaint(e);
             Graphics g = e.Graphics;
+
+            if (showWhiteScreen)
+            {
+                g.Clear(Color.White); // Cover screen
+                return;
+            }
 
             // Draw white circles
             using (Brush whiteBrush = new SolidBrush(Color.White))
