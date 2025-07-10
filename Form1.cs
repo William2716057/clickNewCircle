@@ -7,41 +7,43 @@ namespace clickNewCircle
 {
     public partial class Form1 : Form
     {
-        //define extra circles
         private List<Circle> circles;
         private const int CircleRadius = 30;
         private const int CircleCount = 5;
         private Rectangle centerCircleBounds;
+        private Random rand;
 
-        //Constructor (required to initialize everything)
         public Form1()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
             this.BackColor = Color.Black;
+            this.ClientSize = new Size(800, 600);
             this.MouseClick += new MouseEventHandler(OnMouseClick);
 
-            // Define center red circle
-            int centerRadius = 50;
-            int centerX = this.ClientSize.Width / 2 - centerRadius;
-            int centerY = this.ClientSize.Height / 2 - centerRadius;
-            centerCircleBounds = new Rectangle(centerX, centerY, centerRadius * 2, centerRadius * 2);
+            rand = new Random();
+            GenerateRandomCircles();     // Generate the white ones
+            GenerateCenterCircle();      // Generate the initial red one
+        }
 
-            GenerateRandomCircles();
+        private void GenerateCenterCircle()
+        {
+            int centerRadius = 50;
+            int x = rand.Next(centerRadius, this.ClientSize.Width - centerRadius);
+            int y = rand.Next(centerRadius, this.ClientSize.Height - centerRadius);
+            centerCircleBounds = new Rectangle(x - centerRadius, y - centerRadius, centerRadius * 2, centerRadius * 2);
         }
 
         private void OnMouseClick(object sender, MouseEventArgs e)
         {
             double dx = e.X - (centerCircleBounds.Left + centerCircleBounds.Width / 2);
             double dy = e.Y - (centerCircleBounds.Top + centerCircleBounds.Height / 2);
-            double distance = Math.Sqrt(dx * dx + dy * dy); 
+            double distance = Math.Sqrt(dx * dx + dy * dy);
 
             if (distance <= centerCircleBounds.Width / 2)
             {
-                //MessageBox.Show("Circle Click Successful");
-
-                GenerateRandomCircles();
-                Invalidate();
+                GenerateCenterCircle(); // Move red circle
+                Invalidate(); // Repaint
             }
         }
 
