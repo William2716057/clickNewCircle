@@ -39,7 +39,7 @@ namespace clickNewCircle
             if (distance <= centerCircleBounds.Width / 2)
             {
                 //MessageBox.Show("Circle Click Successful");
-                //remove these two lines
+
                 GenerateRandomCircles();
                 Invalidate();
             }
