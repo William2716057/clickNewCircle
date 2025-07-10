@@ -1,0 +1,9 @@
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.csproj.AssemblyReference.cache
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.Properties.Resources.resources
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.csproj.GenerateResource.cache
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.csproj.CoreCompileInputs.cache
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\bin\Debug\clickNewCircle.exe.config
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\bin\Debug\clickNewCircle.exe
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\bin\Debug\clickNewCircle.pdb
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.exe
+C:\Users\wills\Desktop\Shortcuts\Files\Github\clickNewCircle\clickNewCircle\obj\Debug\clickNewCircle.pdb
