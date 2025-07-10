@@ -8,7 +8,7 @@ namespace clickNewCircle
     public partial class Form1 : Form
     {
         private List<Circle> circles;
-        private List<Rectangle> redCircles; // Keep all red circles
+        private List<Rectangle> oldCircles; // Keep all red circles
         private Rectangle currentRedCircle;
         private const int CircleRadius = 30;
         private const int WhiteCircleCount = 5;
@@ -25,7 +25,7 @@ namespace clickNewCircle
             this.MouseClick += new MouseEventHandler(OnMouseClick);
 
             rand = new Random();
-            redCircles = new List<Rectangle>();
+            oldCircles = new List<Rectangle>();
 
             generateCircles();
             GenerateNewCircle();     // Initial red circle
@@ -54,6 +54,7 @@ namespace clickNewCircle
                 int y = rand.Next(newCircleRadius, this.ClientSize.Height - newCircleRadius);
                 newCircle = new Rectangle(x - newCircleRadius, y - newCircleRadius, newCircleRadius * 2, newCircleRadius * 2);
 
+                //fix here
                 overlaps = false;
                 foreach (var circle in circles)
                 {
@@ -69,7 +70,7 @@ namespace clickNewCircle
             } while (overlaps);
 
             currentRedCircle = newCircle;
-            redCircles.Add(newCircle); // Keep track of all red circles
+            oldCircles.Add(newCircle); // Keep track of all red circles
         }
 
         private void OnMouseClick(object sender, MouseEventArgs e)
@@ -104,7 +105,7 @@ namespace clickNewCircle
             // Draw all red circles
             using (Brush redBrush = new SolidBrush(Color.Red))
             {
-                foreach (var rect in redCircles)
+                foreach (var rect in oldCircles)
                 {
                     g.FillEllipse(redBrush, rect);
                 }
