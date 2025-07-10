@@ -9,7 +9,7 @@ namespace clickNewCircle
     {
         private List<Circle> circles;
         private List<Rectangle> oldCircles; // Keep all red circles
-        private Rectangle currentRedCircle;
+        private Rectangle currentCircle;
         private const int CircleRadius = 30;
         private const int WhiteCircleCount = 5;
         private const int newCircleRadius = 50;
@@ -69,17 +69,17 @@ namespace clickNewCircle
                 }
             } while (overlaps);
 
-            currentRedCircle = newCircle;
-            oldCircles.Add(newCircle); // Keep track of all red circles
+            currentCircle = newCircle;
+            oldCircles.Add(newCircle); // Keep track of all new circles
         }
 
         private void OnMouseClick(object sender, MouseEventArgs e)
         {
-            double dx = e.X - (currentRedCircle.Left + currentRedCircle.Width / 2);
-            double dy = e.Y - (currentRedCircle.Top + currentRedCircle.Height / 2);
+            double dx = e.X - (currentCircle.Left + currentCircle.Width / 2);
+            double dy = e.Y - (currentCircle.Top + currentCircle.Height / 2);
             double distance = Math.Sqrt(dx * dx + dy * dy);
 
-            if (distance <= currentRedCircle.Width / 2)
+            if (distance <= currentCircle.Width / 2)
             {
                 score++;
                 this.Text = $"Score: {score}";
@@ -112,6 +112,11 @@ namespace clickNewCircle
                 foreach (var rect in oldCircles)
                 {
                     g.FillEllipse(redBrush, rect);
+
+                    using (Pen borderPen = new Pen(Color.DarkRed, 2))
+                    {
+                        g.DrawEllipse(borderPen, rect);
+                    }
                 }
             }
         }
