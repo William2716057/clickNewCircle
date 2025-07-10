@@ -83,7 +83,7 @@ namespace clickNewCircle
             {
                 score++;
                 this.Text = $"Score: {score}";
-                GenerateNewCircle(); // Add new red circle
+                GenerateNewCircle(); // Add new circle
                 Invalidate();           // Repaint
             }
         }
@@ -99,10 +99,14 @@ namespace clickNewCircle
                 foreach (var circle in circles)
                 {
                     g.FillEllipse(whiteBrush, circle.X - circle.Radius, circle.Y - circle.Radius, circle.Radius * 2, circle.Radius * 2);
+                    using (Pen borderPen = new Pen(Color.Black, 2)) // 2px thick black border
+                    {
+                        g.DrawEllipse(borderPen, circle.X - circle.Radius, circle.Y - circle.Radius, circle.Radius * 2, circle.Radius * 2);
+                    }
                 }
             }
 
-            // Draw all red circles
+            // Draw all circles
             using (Brush redBrush = new SolidBrush(Color.Red))
             {
                 foreach (var rect in oldCircles)
